@@ -7,10 +7,38 @@ import behavioral.strategy.BlackWhiteFilter;
 import behavioral.strategy.ImageStorage;
 import behavioral.strategy.JpegCompressor;
 import creational.singleton.Database;
+import structural.bridge.RemoteControl;
+import structural.bridge.RemoteControlPro;
+import structural.bridge.SonyTV;
+import structural.decorator.CloudStream;
+import structural.decorator.CompressedCloudStream;
+import structural.decorator.EncryptedCloudStream;
 
 public class App {
 
   public static void main(String[] args) throws Exception {
+    // Creational Singleton Design Pattern
+    System.out.println("========= Creational Singleton Design Pattern =====");
+    var singleton = Database.getInstance("FOO");
+    var anotherSingleton = Database.getInstance("BAR");
+    System.out.println(singleton.value);
+    System.out.println(anotherSingleton.value);
+
+    // Structural Decorator Design Pattern
+    System.out.println("========= Structural Decorator Design Pattern =====");
+    var stream = new EncryptedCloudStream(
+      new CompressedCloudStream(new CloudStream())
+    ); // Wrapping with different decorators
+    stream.writeToCloud("data");
+
+    // Structural Bridge Design Pattern
+    System.out.println("========= Structural Bridge Design Pattern ========");
+    var remoteControl = new RemoteControl(new SonyTV());
+    remoteControl.turnOn();
+    var remoteControlPro = new RemoteControlPro(new SonyTV());
+    remoteControlPro.turnOn();
+    remoteControlPro.setChannel(9);
+
     // Behavioral State Design Pattern
     System.out.println("========== Behavioral State Design Pattern ========");
     var canvas = new Canvas();
@@ -46,12 +74,5 @@ public class App {
     editor.undo(history.stack_pop());
     editor.undo(history.stack_pop());
     System.out.println(editor.getContent());
-
-    // Creational Singleton Design Pattern
-    System.out.println("========= Creational Singleton Design Pattern =====");
-    var singleton = Database.getInstance("FOO");
-    var anotherSingleton = Database.getInstance("BAR");
-    System.out.println(singleton.value);
-    System.out.println(anotherSingleton.value);
   }
 }
