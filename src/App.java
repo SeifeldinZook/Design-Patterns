@@ -13,25 +13,24 @@ import structural.bridge.SonyTV;
 import structural.decorator.CloudStream;
 import structural.decorator.CompressedCloudStream;
 import structural.decorator.EncryptedCloudStream;
+import structural.proxy.Library;
+import structural.proxy.LoggingEbookProxy;
 
 public class App {
 
   public static void main(String[] args) throws Exception {
-    // Creational Singleton Design Pattern
     System.out.println("========= Creational Singleton Design Pattern =====");
     var singleton = Database.getInstance("FOO");
     var anotherSingleton = Database.getInstance("BAR");
     System.out.println(singleton.value);
     System.out.println(anotherSingleton.value);
 
-    // Structural Decorator Design Pattern
     System.out.println("========= Structural Decorator Design Pattern =====");
     var stream = new EncryptedCloudStream(
       new CompressedCloudStream(new CloudStream())
     ); // Wrapping with different decorators
     stream.writeToCloud("data");
 
-    // Structural Bridge Design Pattern
     System.out.println("========= Structural Bridge Design Pattern ========");
     var remoteControl = new RemoteControl(new SonyTV());
     remoteControl.turnOn();
@@ -39,7 +38,14 @@ public class App {
     remoteControlPro.turnOn();
     remoteControlPro.setChannel(9);
 
-    // Behavioral State Design Pattern
+    System.out.println("========= Structural Proxy Design Pattern =========");
+    var library = new Library();
+    String[] filnames = { "a", "b", "c" };
+    for (var fileName : filnames) {
+      library.add(new LoggingEbookProxy(fileName));
+    }
+    library.openEbook("a");
+
     System.out.println("========== Behavioral State Design Pattern ========");
     var canvas = new Canvas();
     canvas.setCurrentTool(new SelectionTool()); // pass an object that implements the Tool interface
@@ -49,7 +55,6 @@ public class App {
     canvas.mouseUp();
     canvas.mouseDown();
 
-    // Behavioral Strategy Design Pattern
     System.out.println("========= Behavioral Strategy Design Pattern ======");
     var imageStorage = new ImageStorage();
     imageStorage.storeIntoStorage(
@@ -58,7 +63,6 @@ public class App {
       new BlackWhiteFilter()
     );
 
-    // Behavioral Momento Design Pattern
     System.out.println("========= Behavioral Momento Design Pattern =======");
     var editor = new Editor();
     var history = new History();
